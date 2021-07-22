@@ -14,8 +14,10 @@ function App() {
   }
 
   //let output = "";
-  const convertor = () => {
-    var num = state.value;
+  const outputResult = () => {
+    let num = ''
+    num = state.value;
+    let _out = "";
     console.log("State", num);
         
     //===
@@ -23,21 +25,22 @@ function App() {
     var val1 = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
     var val2 = ['twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
     var val4 = ['', 'thousand', 'million', 'billion', 'trillion'];
-    var s = num.toString();
-    s = s.replace(/[\, ]/g, '');
+    // var s = num.toString();
+
+    var s = num.replace(/[\, ]/g, '');
     if (s != parseFloat(s))
-        return 'not a number ';
+        return 'Entered value is not a number ';
     var x_val = s.indexOf('.');
-    if (x_val == -1)
+    if (x_val ==+ -1)
         x_val = s.length;
     if (x_val > 15)
-        return 'too big';
+        return 'Entered value is too big';
     var n_val = s.split('');
     var str_val = '';
     var sk_val = 0;
     for (var i = 0; i < x_val; i++) {
-        if ((x_val - i) % 3 == 2) {
-            if (n_val[i] == '1') {
+        if ((x_val - i) % 3 ==+ 2) {
+            if (n_val[i] ==+ '1') {
                 str_val += val1[Number(n_val[i + 1])] + ' ';
                 i++;
                 sk_val = 1;
@@ -47,8 +50,10 @@ function App() {
             }
         } else if (n_val[i] != 0) {
             str_val += val0[n_val[i]] + ' ';
-            if ((x_val - i) % 3 == 0)
-                str_val += 'hundred and';
+            var hunText = 'hundred '
+            if(i > 3 ) hunText = 'hundred and ';
+            if ((x_val - i) % 3 ==+ 0)
+                str_val += hunText;
             sk_val = 1;
         }
         if ((x_val - i) % 3 == 1) {
@@ -63,11 +68,14 @@ function App() {
         for (var ii = x_val + 1; ii < y_val; ii++)
             str_val += val0[n_val[ii]] + ' ';
     }
-    console.log("Output:", str_val.replace(/\s+/g, ' '));
-    //==
+    _out = str_val.replace(/\s+/g, ' ');
+  
 
-    
+
+
+    setState({out: _out});
   }
+
 
   return (
     <>
@@ -81,12 +89,12 @@ function App() {
           </div>  
           <input type="text" className="input-form" name="firstname" placeholder="Enter here.." onChange={getInputValue}/>
           <div className="mb-2">
-            <Button variant="primary" size="lg" onClick={convertor}>
+            <Button variant="primary" size="lg"  onClick={outputResult}>
               Generate
             </Button>{' '}
           </div>
           <div>
-          <h1 id="output-value">{}</h1>
+          <h1 id="output-value">{state.out}</h1>
           </div>
         </div>
         
